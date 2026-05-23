@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { College } from '@/lib/db';
+import { College } from '@/lib/db-postgres';
 
 function StatCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (

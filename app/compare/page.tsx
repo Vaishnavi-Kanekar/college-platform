@@ -2,7 +2,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { College } from '@/lib/db';
+import { College } from '@/lib/db-postgres';
 
 function WinnerBadge() {
   return (

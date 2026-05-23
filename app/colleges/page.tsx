@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import CollegeCard from '@/components/CollegeCard';
-import { College } from '@/lib/db';
+import { College } from '@/lib/db-postgres';
 
 interface SearchResult {
   colleges: College[];
