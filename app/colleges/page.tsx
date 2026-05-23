@@ -284,16 +284,69 @@ export default function CollegesPage() {
       ) : (
         <>
           <div className="college-grid">
-            {result?.colleges.map(college => (
-            <CollegeCard
-            key={college.id}
-            college={college}
-            onCompareToggle={toggleCompare}
-            isInCompare={compareList.some(c => c.id === college.id)}
-            compareCount={compareList.length}
-            />
+            {result?.colleges.map((college) => (
+              <div
+                key={college.id}
+                style={{
+                  border: '1px solid var(--border)',
+                  borderRadius: '12px',
+                  padding: '1rem',
+                  background: 'var(--bg-card)',
+                }}
+              >
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>
+                  {college.name}
+                </h3>
+
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                  📍 {college.location}
+                </p>
+
+                <p style={{ marginTop: '0.5rem' }}>
+                  ⭐ Rating: {college.rating}
+                </p>
+
+                <p>
+                  🎓 Type: {college.type}
+                </p>
+
+                <p>
+                  💰 Fees: ₹{(college.total_fees / 100000).toFixed(1)}L
+                </p>
+
+                <p>
+                  📊 Placement: {college.placement_percentage}%
+                </p>
+
+                <p>
+                  💼 Avg Package: {college.avg_package} LPA
+                </p>
+
+                <p>
+                  🏫 Established: {college.established}
+                </p>
+
+                <div style={{ marginTop: '0.5rem' }}>
+                  {college.entrance_exams?.slice(0, 3).map((ex: string) => (
+                    <span
+                      key={ex}
+                      style={{
+                        display: 'inline-block',
+                        marginRight: '0.4rem',
+                        padding: '2px 6px',
+                        fontSize: '0.75rem',
+                        background: '#1f2937',
+                        color: '#fff',
+                        borderRadius: '4px',
+                      }}
+                    >
+                      {ex}
+                    </span>
+                  ))}
+                </div>
+              </div>
             ))}
-            </div>
+          </div>
           {/* Pagination */}
           {result && result.pages > 1 && (
             <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '3rem', paddingBottom: '4rem' }}>
