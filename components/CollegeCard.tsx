@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { College } from '@/lib/db';
+import { College } from '@/lib/db-postgres';
 
 interface Props {
   college: College;
