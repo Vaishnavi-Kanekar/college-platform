@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import CollegeCard from '@/components/CollegeCard';
-import { College } from '@/lib/db;
+import { College } from '@/lib/db-postgres';
 
 interface SearchResult {
   colleges: College[];
@@ -33,7 +33,11 @@ export default function CollegesPage() {
   const [maxFees, setMaxFees] = useState('');
   const [page, setPage] = useState(1);
   const [result, setResult] = useState<SearchResult | null>(null);
-  const [meta, setMeta] = useState<MetaData | null>(null);
+  const [meta, setMeta] = useState<MetaData>({
+  states: [],
+  types: [],
+  exams: [],
+});
   const [loading, setLoading] = useState(true);
   const [compareList, setCompareList] = useState<College[]>([]);
 
@@ -56,7 +60,11 @@ export default function CollegesPage() {
 
     const res = await fetch(`/api/colleges?${params.toString()}`);
     const data = await res.json();
-    setResult(data);
+    setResult({
+    colleges: data.colleges || [],
+    total: data.total || 0,
+    pages: data.pages || 1,
+    });
     setLoading(false);
   }, [query, state, type, exam, maxFees, page]);
 
@@ -141,7 +149,7 @@ export default function CollegesPage() {
             style={{ flex: '1', minWidth: '160px' }}
           >
             <option value="all">All States</option>
-            {meta?.states.map(s => (
+            {meta.states.map(s => (
               <option key={s} value={s}>{s}</option>
             ))}
           </select>
@@ -154,7 +162,7 @@ export default function CollegesPage() {
             style={{ flex: '1', minWidth: '140px' }}
           >
             <option value="all">All Types</option>
-            {meta?.types.map(t => (
+            {meta.types.map(t => (
               <option key={t} value={t}>{t}</option>
             ))}
           </select>
@@ -179,7 +187,7 @@ export default function CollegesPage() {
             style={{ flex: '1', minWidth: '160px' }}
           >
             <option value="all">All Exams</option>
-            {meta?.exams.map(ex => (
+            {meta.exams.map(ex => (
               <option key={ex} value={ex}>{ex}</option>
             ))}
           </select>
@@ -277,16 +285,15 @@ export default function CollegesPage() {
         <>
           <div className="college-grid">
             {result?.colleges.map(college => (
-              <CollegeCard
-                key={college.id}
-                college={college}
-                onCompareToggle={toggleCompare}
-                isInCompare={compareList.some(c => c.id === college.id)}
-                compareCount={compareList.length}
-              />
+            <CollegeCard
+            key={college.id}
+            college={college}
+            onCompareToggle={toggleCompare}
+            isInCompare={compareList.some(c => c.id === college.id)}
+            compareCount={compareList.length}
+            />
             ))}
-          </div>
-
+            </div>
           {/* Pagination */}
           {result && result.pages > 1 && (
             <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '3rem', paddingBottom: '4rem' }}>
